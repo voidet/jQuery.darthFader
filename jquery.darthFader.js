@@ -27,17 +27,17 @@
 
 				methods.resetZIndex($this.currentIndex);
 
-				$('#carousel-nav .dot').on('click', function() {
+				$('.dot', $this.settings.nav).on('click', function() {
 					$($this.items).not(':eq('+$this.currentIndex+')').hide();
 					$this.currentIndex = $(this).index();
 					methods.jumpTo($this.currentIndex);
 				});
 
-				$('#carousel-nav .previous').on('click', function() {
+				$('.previous', $this.settings.nav).on('click', function() {
 					methods.previous();
 				});
 
-				$('#carousel-nav .next').on('click', function() {
+				$('.next', $this.settings.nav).on('click', function() {
 					methods.next();
 				});
 
