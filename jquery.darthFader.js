@@ -28,7 +28,7 @@
 				methods.resetZIndex($this.currentIndex);
 
 				$('#carousel-nav .dot').on('click', function() {
-					$('#hero-carousel li').not(':eq('+$this.currentIndex+')').hide();
+					$($this.items).not(':eq('+$this.currentIndex+')').hide();
 					$this.currentIndex = $(this).index();
 					methods.jumpTo($this.currentIndex);
 				});
