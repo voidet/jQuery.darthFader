@@ -30,6 +30,7 @@
 				$('.dot', $this.settings.nav).on('click', function() {
 					$($this.items).not(':eq('+$this.currentIndex+')').hide();
 					$this.currentIndex = $(this).index();
+					methods.resetTimer();
 					methods.jumpTo($this.currentIndex);
 				});
 
