@@ -79,6 +79,8 @@
 		jumpTo: function(index) {
 			methods.resetZIndex(index);
 			changeDots();
+			$(' > *', $this.items).not(':eq('+$this.currentIndex+')').fadeOut(1000);
+			$(' > *', $this.items).eq(index).fadeIn(1000);
 			$($this.items).eq(index).fadeIn(1000);
 		},
 		resetZIndex: function(targetIndex) {
