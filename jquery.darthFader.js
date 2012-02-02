@@ -16,6 +16,10 @@
 				$this.itemCount = $this.items.length;
 				$this.currentIndex = 0;
 
+				if ($this.itemCount <= 1) {
+					return false;
+				}
+
 				//Setup nav
 				$($this.settings.nav).append('<div class="previous"></div><div class="dots"></div>');
 				for (var i=0; i < $this.itemCount; i++) {
