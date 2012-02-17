@@ -1,5 +1,7 @@
 (function($){
 
+	var nextZIndex;
+
 	var methods = {
 		init : function(options) {
 			return this.each(function(){
@@ -9,16 +11,14 @@
 				$this.settings = $.extend({
 					'carousel': '#carousel',
 					'nav': '#carousel-nav',
-					'speed': 3000
+					'speed': 9000
 					}, options);
 
 				$this.items = $(' > *', $this);
 				$this.itemCount = $this.items.length;
 				$this.currentIndex = 0;
 
-				if ($this.itemCount <= 1) {
-					return false;
-				}
+				nextZIndex = $this.itemCount;
 
 				//Setup nav
 				$($this.settings.nav).append('<div class="previous"></div><div class="dots"></div>');
@@ -32,17 +32,17 @@
 				methods.resetZIndex($this.currentIndex);
 
 				$('.dot', $this.settings.nav).on('click', function() {
-					$($this.items).not(':eq('+$this.currentIndex+')').hide();
+					$('li', $this.settings.carousel).not(':eq('+$this.currentIndex+')').hide();
 					$this.currentIndex = $(this).index();
 					methods.resetTimer();
 					methods.jumpTo($this.currentIndex);
 				});
 
-				$('.previous', $this.settings.nav).on('click', function() {
+				$('#carousel-nav .previous').on('click', function() {
 					methods.previous();
 				});
 
-				$('.next', $this.settings.nav).on('click', function() {
+				$('#carousel-nav .next').on('click', function() {
 					methods.next();
 				});
 
@@ -78,14 +78,13 @@
 			$this.timer = setInterval(methods.cycleItems, $this.settings.speed);
 		},
 		pause: function() {
-
+			clearInterval($this.timer);
 		},
 		jumpTo: function(index) {
-			methods.resetZIndex(index);
+			//methods.resetZIndex(index);
+
 			changeDots();
-			$(' > *', $this.items).not(':eq('+$this.currentIndex+')').fadeOut(1000);
-			$(' > *', $this.items).eq(index).fadeIn(1000);
-			$($this.items).eq(index).fadeIn(1000);
+			$($this.items).eq(index).css({zIndex:nextZIndex++}).hide().fadeIn(1000);
 		},
 		resetZIndex: function(targetIndex) {
 			var zIndex = $this.itemCount - 1;
@@ -103,14 +102,23 @@
 		$('.dot', $this.settings.nav).eq($this.currentIndex).addClass('activedot');
 	}
 
+
 	$.fn.darthFader = function( method ) {
 		if (methods[method]) {
 			return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
 		} else if ( typeof method === 'object' || ! method ) {
 			return methods.init.apply( this, arguments );
 		} else {
-			$.error( 'Method ' +  method + ' does not exist on jQuery.tooltip' );
+			$.error( 'Method ' +  method + ' does not exist on jQuery.darthFader' );
 		}
 
 	};
+
+	$.fn.darthFader.pause = function() {
+		methods.pause();
+	}
+
+	$.fn.darthFader.resume = function() {
+		methods.resetTimer();
+	}
 })(jQuery);
