@@ -89,9 +89,8 @@
 			$(item).fadeIn(1000, function() {
 				$(this).remove();
 				$($this.items).eq(index).css({zIndex:nextZIndex++}).show();
+				methods.resetZIndex($this.currentIndex);
 			});
-
-			methods.resetZIndex($this.currentIndex);
 			
 		},
 		resetZIndex: function(targetIndex) {
