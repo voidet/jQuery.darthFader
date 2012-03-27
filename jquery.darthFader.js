@@ -81,10 +81,18 @@
 			clearInterval($this.timer);
 		},
 		jumpTo: function(index) {
-			//methods.resetZIndex(index);
-
 			changeDots();
-			$($this.items).eq(index).css({zIndex:nextZIndex++}).hide().fadeIn(1000);
+			var item = $($this.items).get(index);
+			item = $(item).css({zIndex: $(' > *', $this).length}).hide().clone();
+			$($this).append(item);
+		
+			$(item).fadeIn(1000, function() {
+				$(this).remove();
+				$($this.items).eq(index).css({zIndex:nextZIndex++}).show();
+			});
+
+			methods.resetZIndex($this.currentIndex);
+			
 		},
 		resetZIndex: function(targetIndex) {
 			var zIndex = $this.itemCount - 1;
@@ -92,6 +100,7 @@
 				$($this.items).eq(targetIndex++).css({'z-index': zIndex--});
 				if (targetIndex == $this.itemCount) {
 					targetIndex = 0;
+					nextZIndex = $this.itemCount - 1;
 				}
 			}
 		}
@@ -101,7 +110,6 @@
 		$('.dot', $this.settings.nav).removeClass('activedot');
 		$('.dot', $this.settings.nav).eq($this.currentIndex).addClass('activedot');
 	}
-
 
 	$.fn.darthFader = function( method ) {
 		if (methods[method]) {
