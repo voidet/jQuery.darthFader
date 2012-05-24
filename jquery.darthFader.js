@@ -9,13 +9,17 @@
 				$this = $(this);
 
 				$this.settings = $.extend({
-					'carousel': '#carousel',
 					'nav': '#carousel-nav',
 					'speed': 9000
 					}, options);
 
 				$this.items = $(' > *', $this);
 				$this.itemCount = $this.items.length;
+
+				if ($this.itemCount <= 1) {
+					return;
+				}
+
 				$this.currentIndex = 0;
 
 				nextZIndex = $this.itemCount;
@@ -32,17 +36,17 @@
 				methods.resetZIndex($this.currentIndex);
 
 				$('.dot', $this.settings.nav).on('click', function() {
-					$('li', $this.settings.carousel).not(':eq('+$this.currentIndex+')').hide();
+					$('li', $this).not(':eq('+$this.currentIndex+')').hide();
 					$this.currentIndex = $(this).index();
 					methods.resetTimer();
 					methods.jumpTo($this.currentIndex);
 				});
 
-				$('#carousel-nav .previous').on('click', function() {
+				$('.previous', $this.settings.nav).on('click', function() {
 					methods.previous();
 				});
 
-				$('#carousel-nav .next').on('click', function() {
+				$('.next', $this.settings.nav).on('click', function() {
 					methods.next();
 				});
 
